@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Stolen from https://github.com/heroku/heroku-buildpack-ruby/blob/master/bin/detect
+
+if [ -z "$CNB_STACK_ID" ]; then
+  # v2 API
+  APP_DIR=$1
+else
+  PLATFORM_DIR=$1
+  PLAN=$2
+  # working is the cwd now
+  # v3 API
+  APP_DIR=$(pwd)
+fi
+
+if [ -f "$APP_DIR/.ip_data_urls" ]; then
+  echo "IP Data URLs found"
+  exit 0
+else
+  echo "Did not find IP Data URLs"
+  exit 1
+fi

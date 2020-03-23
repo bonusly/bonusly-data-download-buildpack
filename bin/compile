@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+echo "-----> Found a .ip_data_urls file"
+
+# Bail early but noisily
+if [ ! -s $1/.ip_data_urls ]; then
+  echo ".ip_data_urls empty. Skipping." | indent
+  exit 0
+fi
+
+cd $1
+
+while read url; do
+  echo Downloading $url | indent
+  wget -P config/ip_data $url
+done < .ip_data_urls
